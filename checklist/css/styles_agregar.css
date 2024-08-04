@@ -1,0 +1,78 @@
+/* styles_agregar.css */
+
+/* Estilos básicos para el formulario */
+body {
+    font-family: Arial, sans-serif;
+    font-size: 12px; /* Según tu preferencia */
+    margin: 20px;
+    background-color: #ddd;
+}
+
+h1 {
+    color: #333;
+    text-align: center; /* Centra el texto del título */
+}
+
+form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="date"],
+textarea,
+select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Incluye el padding en el ancho total */
+}
+
+textarea {
+  height: 100px; /* Ajusta la altura según tus necesidades */
+}
+
+input[type="submit"] {
+    background-color: #1e90ff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+input[type="submit"]:hover {
+    background-color: #1e90ff;
+}
+
+a {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: white;
+    background-color: #1e90ff;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+a:hover {
+  background-color: #4682b4;
+}
