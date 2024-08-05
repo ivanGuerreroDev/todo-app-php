@@ -1,58 +1,27 @@
 <?php
+include 'conexion.php';
+include 'vista.php';
 
-require_once './sys/autoload.php';
+// Mostrar tareas por hacer, en progreso y terminadas
+$sql = "SELECT * FROM tareas WHERE estado = 'por hacer' ORDER BY fecha_compromiso ASC";
+$result = $conn->query($sql);
+$tareas_por_hacer = $result->fetch_all(MYSQLI_ASSOC);
 
-error_reporting(0);
+$sql = "SELECT * FROM tareas WHERE estado = 'en progreso' ORDER BY fecha_compromiso ASC";
+$result = $conn->query($sql);
+$tareas_en_progreso = $result->fetch_all(MYSQLI_ASSOC);
 
-Session::begin();
-$request = Http::getRequestedPath();
-$routes = require_once './routes.php';
-$args = $foundRoute = null;
-foreach ($routes as $route) {
-	if ($route->isMatched($request, $args)) {
-		$foundRoute = $route;
-		break;
-	}
-}
-$className = $foundRoute->getController() . 'Controller';
-$worker = new $className;
-if (method_exists($worker, '__pre')) {
-	call_user_func([$worker, '__pre']);
-}
-if (!method_exists($worker, $foundRoute->getMethod())) {
-	ob_clean();
-	die('CONTROLLER: Method not found.');
-}
-$methodName = $foundRoute->getMethod();
-call_user_func_array([$worker, $methodName], $args);
-if (method_exists($worker, '__post')) {
-	call_user_func([$worker, '__post']);
-}
-$DATA = $worker->getData();
-$headerView = './app/views/_global/header.php';
-$footerView = './app/views/_global/footer.php';
-$view = './app/views/' . $foundRoute->getController() . '/' . $foundRoute->getMethod() . '.php';
+$sql = "SELECT * FROM tareas WHERE estado = 'terminada' ORDER BY fecha_compromiso ASC";
+$result = $conn->query($sql);
+$tareas_terminadas = $result->fetch_all(MYSQLI_ASSOC);
 
-if (!file_exists($headerView)) {
-	ob_clean();
-	die('VIEW: Header file not found.');
-}
 
-if (!file_exists($view)) {
-	ob_clean();
-	die('VIEW: Main template file not found.');
-}
+// Mostrar opciones de reporte
+$tipos_tareas = array();
+$sql = "SELECT * FROM tipos_tareas";
+$result = $conn->query($sql);
 
-if (!file_exists($footerView)) {
-	ob_clean();
-	die('VIEW: Footer file not found.');
+while ($row = $result->fetch_assoc()) {
+    $tipos_tareas[] = $row['nombre'];
 }
-
-$jsModule = sprintf('assets/js/modules/%s_%s.js', $foundRoute->getController(), $foundRoute->getMethod());
-if (file_exists($jsModule)) {
-	$DATA['JAVASCRIPT_MODULE'] = $jsModule;
-}
-
-require_once $headerView;
-require_once $view;
-require_once $footerView;
+?>
