@@ -1,0 +1,34 @@
+version: '3'
+services:
+    php-nginx:
+          build:
+            dockerfile: docker/nginx/Dockerfile
+            context: "."
+          image: php-nginx
+          ports:
+            - 80:80
+          volumes:
+            - ./:/app
+    php-fpm:
+        build:
+          dockerfile: docker/php/Dockerfile
+          context: "."
+        image: php-fpm
+        env_file:
+          - docker/database.env
+        ports:
+          - 9000
+        volumes:
+          - ./:/app
+    mysqldb:
+        image: mysql:5.7
+        build:
+          context: docker/mysql
+        restart: always
+        env_file:
+            - docker/database.env
+        ports:
+            - 3306:3306
+        volumes:
+            - ./_data/mysql:/var/lib/mysql
+            - ./docker/mysql/db:/docker-entrypoint-initdb.d/
